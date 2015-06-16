@@ -4,7 +4,7 @@ package com.mwt.explore;
  * Exposes a method to record exploration data based on generic contexts. Exploration data
  * is specified as a set of tuples <context, action, probability, key> as described below. An 
  * application passes Recorder object to the {@link MwtExplorer} constructor. See
- * @StringRecorder for a sample IRecorder object.
+ * {@link StringRecorder} for a sample IRecorder object.
  *
  * @param <T> The type of the context
  */

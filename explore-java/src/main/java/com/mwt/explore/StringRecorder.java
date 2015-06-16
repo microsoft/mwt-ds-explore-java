@@ -15,6 +15,19 @@ public class StringRecorder<T> implements Recorder<T> {
     recording.append(" | ");
     recording.append(context.toString());
     recording.append("\n");
+  }
 
+  public String getRecording() {
+    return getRecording(true);
+  }
+
+  public String getRecording(boolean flush) {
+    if (!flush) {
+      return recording.toString();
+    }
+
+    String out = recording.toString();
+    recording = new StringBuilder();
+    return out;
   }
 }
