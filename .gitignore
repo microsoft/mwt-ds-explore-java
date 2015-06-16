@@ -1,0 +1,27 @@
+*.class
+*.pyc
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.war
+*.ear
+
+*.idea
+dependency-reduced-pom.xml
+scalastyle-output.xml
+
+target/
+logs/
+assembly/
+
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+# vim swap files
+*.sw*
+
+# IntelliJ IDEA files
+*.iml
