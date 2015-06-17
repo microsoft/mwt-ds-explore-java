@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * In some cases, different actions have a different scores, and you would prefer to
- * choose actions with large scores. Softmax allows you to do that.
+ * GenericExplorer provides complete flexibility.  You can create any
+ * distribution over actions desired, and it will draw from that.
  */
 public class VariableActionGenericExplorer<T extends VariableActionContext> implements Explorer<T>, ConsumeScorer<T> {
   private Scorer<T> defaultScorer;
