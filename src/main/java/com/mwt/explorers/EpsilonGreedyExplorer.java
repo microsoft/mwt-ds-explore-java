@@ -17,7 +17,7 @@ public class EpsilonGreedyExplorer<T> implements Explorer<T>, ConsumePolicy<T> {
   private int numActions;
 
   /**
-   * The constructor .
+   * The constructor
    *
    * @param defaultPolicy   A default function which outputs an action given a context.
    * @param epsilon         The probability of a random exploration.
