@@ -1,4 +1,6 @@
-package com.mwt.explore;
+package com.mwt.recorders;
+
+import com.mwt.explorers.MwtExplorer;
 
 /**
  * Exposes a method to record exploration data based on generic contexts. Exploration data

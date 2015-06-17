@@ -1,4 +1,7 @@
-package com.mwt.explore;
+package com.mwt.explorers;
+
+import com.mwt.misc.ChosenAction;
+import com.mwt.recorders.Recorder;
 
 /**
  * The top-level MwtExplorer class. Using this enables principled and efficient exploration

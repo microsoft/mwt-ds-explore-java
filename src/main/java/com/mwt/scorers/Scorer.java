@@ -1,4 +1,4 @@
-package com.mwt.explore;
+package com.mwt.scorers;
 
 import java.util.ArrayList;
 

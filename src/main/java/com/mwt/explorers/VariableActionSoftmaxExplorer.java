@@ -1,4 +1,9 @@
-package com.mwt.explore;
+package com.mwt.explorers;
+
+import com.mwt.consumers.ConsumeScorer;
+import com.mwt.contexts.VariableActionContext;
+import com.mwt.misc.ChosenAction;
+import com.mwt.scorers.Scorer;
 
 import java.util.ArrayList;
 import java.util.Random;

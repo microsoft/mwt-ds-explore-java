@@ -1,4 +1,4 @@
-package com.mwt.explore;
+package com.mwt.contexts;
 
 /**
  * Represents a context interface with variable number of actions which is

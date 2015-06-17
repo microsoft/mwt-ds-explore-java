@@ -1,4 +1,4 @@
-package com.mwt.explore;
+package com.mwt.misc;
 
 /**
  * A ChosenAction consists of an action to take,

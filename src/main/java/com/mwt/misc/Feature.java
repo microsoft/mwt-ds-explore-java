@@ -1,4 +1,4 @@
-package com.mwt.explore;
+package com.mwt.misc;
 
 /**
  * Represents a feature in a sparse array.

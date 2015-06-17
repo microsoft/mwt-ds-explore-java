@@ -1,4 +1,4 @@
-package com.mwt.explore;
+package com.mwt.policies;
 
 /**
  * Exposes a method to choose an action given a generic context. IPolicy objects are

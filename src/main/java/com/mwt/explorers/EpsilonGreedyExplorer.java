@@ -1,4 +1,8 @@
-package com.mwt.explore;
+package com.mwt.explorers;
+
+import com.mwt.consumers.ConsumePolicy;
+import com.mwt.misc.ChosenAction;
+import com.mwt.policies.Policy;
 
 import java.util.Random;
 
@@ -6,25 +10,31 @@ import java.util.Random;
  * The epsilon greedy exploration algorithm. This is a good choice if you have no idea
  * which actions should be preferred.  Epsilon greedy is also computationally cheap.
  */
-public class VariableActionEpsilonGreedyExplorer<T extends VariableActionContext> implements Explorer<T>, ConsumePolicy<T> {
+public class EpsilonGreedyExplorer<T> implements Explorer<T>, ConsumePolicy<T> {
   private Policy<T> defaultPolicy;
   private final float epsilon;
   private boolean explore = true;
+  private int numActions;
 
   /**
    * The constructor .
    *
    * @param defaultPolicy   A default function which outputs an action given a context.
    * @param epsilon         The probability of a random exploration.
+   * @param numActions      The number of actions to randomize over.
    *
    */
-  public VariableActionEpsilonGreedyExplorer(Policy<T> defaultPolicy, float epsilon) {
+  public EpsilonGreedyExplorer(Policy<T> defaultPolicy, float epsilon, int numActions) {
+    if (numActions < 1) {
+      throw new IllegalArgumentException("Number of actions must be at least 1.");
+    }
     if (epsilon < 0 || epsilon > 1) {
       throw new IllegalArgumentException("Epsilon must be between 0 and 1.");
     }
     
     this.defaultPolicy = defaultPolicy;
     this.epsilon = epsilon;
+    this.numActions = numActions;
   }
 
   public void updatePolicy(Policy<T> newPolicy) {
@@ -32,7 +42,6 @@ public class VariableActionEpsilonGreedyExplorer<T extends VariableActionContext
   }
 
   public ChosenAction chooseAction(long saltedSeed, T context) {
-    int numActions = context.getNumberOfActions();
     Random random = new Random(saltedSeed);
 
     int chosenAction = defaultPolicy.chooseAction(context);

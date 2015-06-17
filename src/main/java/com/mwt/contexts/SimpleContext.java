@@ -1,4 +1,6 @@
-package com.mwt.explore;
+package com.mwt.contexts;
+
+import com.mwt.misc.Feature;
 
 import java.util.ArrayList;
 

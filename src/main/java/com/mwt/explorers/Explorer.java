@@ -1,4 +1,7 @@
-package com.mwt.explore;
+package com.mwt.explorers;
+
+import com.mwt.misc.ChosenAction;
+import com.mwt.policies.Policy;
 
 /**
  * Exposes a method to choose an action given a generic context, and obtain the relevant

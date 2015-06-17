@@ -1,4 +1,6 @@
-package com.mwt.explore;
+package com.mwt.recorders;
+
+import com.mwt.recorders.Recorder;
 
 /**
  * A sample recorder class that converts the exploration tuple into string format.
