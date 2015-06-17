@@ -12,7 +12,7 @@
 dependency-reduced-pom.xml
 scalastyle-output.xml
 
-target/
+target/*
 logs/
 assembly/
 
