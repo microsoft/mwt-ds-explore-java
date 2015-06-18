@@ -34,6 +34,10 @@ public class SoftmaxExplorer<T> implements Explorer<T>, ConsumeScorer<T> {
     this.numActions = numActions;
   }
 
+  protected int getNumActions(T context) {
+    return numActions;
+  }
+
   public void updateScorer(Scorer<T> newScorer) {
     defaultScorer = newScorer;
   }
@@ -44,7 +48,7 @@ public class SoftmaxExplorer<T> implements Explorer<T>, ConsumeScorer<T> {
     // Invoke the default scorer function
     ArrayList<Float> scores = defaultScorer.scoreActions(context);
     int numScores = scores.size();
-    if (numScores != numActions) {
+    if (numScores != getNumActions(context)) {
       throw new RuntimeException("The number of scores returned by the scorer must equal number of actions");
     }
 

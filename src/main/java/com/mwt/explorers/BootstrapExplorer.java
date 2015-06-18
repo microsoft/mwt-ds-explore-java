@@ -15,7 +15,7 @@ import java.util.Random;
 public class BootstrapExplorer<T> implements Explorer<T>, ConsumePolicies<T> {
   private List<Policy<T>> policies;
   private boolean explore = true;
-  final int numActions;
+  final private int numActions;
 
   /**
    * @param policies  A set of default policies to be uniform random over.
@@ -28,6 +28,10 @@ public class BootstrapExplorer<T> implements Explorer<T>, ConsumePolicies<T> {
     }
     this.policies = policies;
     this.numActions = numActions;
+  }
+
+  protected int getNumActions(T context) {
+    return numActions;
   }
 
   public void updatePolicy(List<Policy<T>> newPolicies) {
@@ -46,7 +50,7 @@ public class BootstrapExplorer<T> implements Explorer<T>, ConsumePolicies<T> {
 
     if (explore) {
       int actionFromBag = 0;
-      int[] actionsSelected = new int[numActions];
+      int[] actionsSelected = new int[getNumActions(context)];
 
       // Invoke the default policy function to get the action
       for (int currentBag = 0; currentBag < policies.size(); currentBag++) {
@@ -55,7 +59,7 @@ public class BootstrapExplorer<T> implements Explorer<T>, ConsumePolicies<T> {
         // we could end up calling the wrong bag
         actionFromBag = policies.get(currentBag).chooseAction(context);
 
-        if (actionFromBag <= 0 || actionFromBag > numActions) {
+        if (actionFromBag <= 0 || actionFromBag > getNumActions(context)) {
           throw new RuntimeException("Action chosen by default policy is not within valid range.");
         }
 

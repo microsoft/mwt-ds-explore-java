@@ -36,6 +36,10 @@ public class TauFirstExplorer<T> implements Explorer<T>, ConsumePolicy<T> {
     this.numActions = numActions;
   }
 
+  protected int getNumActions(T context) {
+    return numActions;
+  }
+
   public void updatePolicy(Policy<T> newPolicy) {
     this.defaultPolicy = newPolicy;
   }
@@ -49,14 +53,14 @@ public class TauFirstExplorer<T> implements Explorer<T>, ConsumePolicy<T> {
 
     if ((tau > 0) && explore) {
       tau--;
-      chosenAction = random.nextInt(numActions) + 1; // Add 1 because actions are 1-indexed
-      actionProbability = 1.f / numActions;
+      chosenAction = random.nextInt(getNumActions(context)) + 1; // Add 1 because actions are 1-indexed
+      actionProbability = 1.f / getNumActions(context);
       logAction = true;
     } else {
       // Invoke the default policy function to get the action
       chosenAction = defaultPolicy.chooseAction(context);
 
-      if (chosenAction == 0 || chosenAction > numActions) {
+      if (chosenAction == 0 || chosenAction > getNumActions(context)) {
         throw new RuntimeException("Action chosen by default policy is not within valid range.");
       }
 

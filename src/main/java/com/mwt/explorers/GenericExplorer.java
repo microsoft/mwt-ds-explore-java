@@ -31,6 +31,10 @@ public class GenericExplorer<T> implements Explorer<T>, ConsumeScorer<T> {
     this.numActions = numActions;
   }
 
+  protected int getNumActions(T context) {
+    return numActions;
+  }
+
   public void updateScorer(Scorer<T> newScorer) {
     defaultScorer = newScorer;
   }
@@ -41,7 +45,7 @@ public class GenericExplorer<T> implements Explorer<T>, ConsumeScorer<T> {
     // Invoke the default scorer function
     ArrayList<Float> weights = defaultScorer.scoreActions(context);
     int numWeights = weights.size();
-    if (numWeights != numActions) {
+    if (numWeights != getNumActions(context)) {
       throw new RuntimeException("The number of weights returned by the scorer must equal number of actions");
     }
 

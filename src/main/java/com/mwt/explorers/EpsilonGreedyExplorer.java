@@ -37,6 +37,10 @@ public class EpsilonGreedyExplorer<T> implements Explorer<T>, ConsumePolicy<T> {
     this.numActions = numActions;
   }
 
+  protected int getNumActions(T context) {
+    return numActions;
+  }
+
   public void updatePolicy(Policy<T> newPolicy) {
     this.defaultPolicy = newPolicy;
   }
@@ -45,18 +49,18 @@ public class EpsilonGreedyExplorer<T> implements Explorer<T>, ConsumePolicy<T> {
     Random random = new Random(saltedSeed);
 
     int chosenAction = defaultPolicy.chooseAction(context);
-    if (chosenAction <= 0 || chosenAction > numActions) {
+    if (chosenAction <= 0 || chosenAction > getNumActions(context)) {
       throw new RuntimeException("Action chosen by default policy is not within valid range.");
     }
 
     float epsilon = explore ? this.epsilon : 0f;
     float actionProbability = 0f;
-    float baseProbability = epsilon / (float) numActions;
+    float baseProbability = epsilon / (float) getNumActions(context);
     if (random.nextFloat() < (1.0f - epsilon)) {
       actionProbability = 1.f - epsilon + baseProbability;
     } else {
       // Get uniform random action ID
-      int actionId = random.nextInt(numActions) + 1; // Add 1 because actions are 1-indexed
+      int actionId = random.nextInt(getNumActions(context)) + 1; // Add 1 because actions are 1-indexed
       if (actionId == chosenAction) {
         // IF it matches the one chosen by the default policy
         // then increase the probability
