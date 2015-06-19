@@ -7,7 +7,7 @@ final public class Feature {
   private float value;
   private int id;
 
-  public Feature(float value, int id) {
+  public Feature(int id, float value) {
     this.value = value;
     this.id = id;
   }

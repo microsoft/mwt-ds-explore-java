@@ -31,7 +31,7 @@ public class MwtExplorer<T> {
    *
    * @return The chosen action
    */
-  int chooseAction(Explorer<T> explorer, String uniqueKey, T context) {
+  public int chooseAction(Explorer<T> explorer, String uniqueKey, T context) {
     long seed = uniqueKey.hashCode();
     DecisionTuple decisionTuple = explorer.chooseAction(seed + appId, context);
 
