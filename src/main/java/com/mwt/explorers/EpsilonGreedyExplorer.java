@@ -1,7 +1,7 @@
 package com.mwt.explorers;
 
 import com.mwt.consumers.ConsumePolicy;
-import com.mwt.misc.ChosenAction;
+import com.mwt.misc.DecisionTuple;
 import com.mwt.policies.Policy;
 
 import java.util.Random;
@@ -45,22 +45,23 @@ public class EpsilonGreedyExplorer<T> implements Explorer<T>, ConsumePolicy<T> {
     this.defaultPolicy = newPolicy;
   }
 
-  public ChosenAction chooseAction(long saltedSeed, T context) {
+  public DecisionTuple chooseAction(long saltedSeed, T context) {
+    int numActionsForContext = getNumActions(context);
     Random random = new Random(saltedSeed);
 
     int chosenAction = defaultPolicy.chooseAction(context);
-    if (chosenAction <= 0 || chosenAction > getNumActions(context)) {
+    if (chosenAction <= 0 || chosenAction > numActionsForContext) {
       throw new RuntimeException("Action chosen by default policy is not within valid range.");
     }
 
     float epsilon = explore ? this.epsilon : 0f;
     float actionProbability = 0f;
-    float baseProbability = epsilon / (float) getNumActions(context);
+    float baseProbability = epsilon / (float) numActionsForContext;
     if (random.nextFloat() < (1.0f - epsilon)) {
       actionProbability = 1.f - epsilon + baseProbability;
     } else {
       // Get uniform random action ID
-      int actionId = random.nextInt(getNumActions(context)) + 1; // Add 1 because actions are 1-indexed
+      int actionId = random.nextInt(numActionsForContext) + 1; // Add 1 because actions are 1-indexed
       if (actionId == chosenAction) {
         // IF it matches the one chosen by the default policy
         // then increase the probability
@@ -72,7 +73,7 @@ public class EpsilonGreedyExplorer<T> implements Explorer<T>, ConsumePolicy<T> {
       }
       chosenAction = actionId;
     }
-    return new ChosenAction(chosenAction, actionProbability, true);
+    return new DecisionTuple(chosenAction, actionProbability, true);
   }
 
   public void enableExplore(boolean explore) {
