@@ -1,7 +1,7 @@
 package com.mwt.explorers;
 
 import com.mwt.consumers.ConsumePolicy;
-import com.mwt.misc.ChosenAction;
+import com.mwt.misc.DecisionTuple;
 import com.mwt.policies.Policy;
 
 import java.util.Random;
@@ -44,7 +44,8 @@ public class TauFirstExplorer<T> implements Explorer<T>, ConsumePolicy<T> {
     this.defaultPolicy = newPolicy;
   }
 
-  public ChosenAction chooseAction(long saltedSeed, T context) {
+  public DecisionTuple chooseAction(long saltedSeed, T context) {
+    int numActionsForContext = getNumActions(context);
     Random random = new Random(saltedSeed);
 
     int chosenAction = 0;
@@ -53,14 +54,14 @@ public class TauFirstExplorer<T> implements Explorer<T>, ConsumePolicy<T> {
 
     if ((tau > 0) && explore) {
       tau--;
-      chosenAction = random.nextInt(getNumActions(context)) + 1; // Add 1 because actions are 1-indexed
-      actionProbability = 1.f / getNumActions(context);
+      chosenAction = random.nextInt(numActionsForContext) + 1; // Add 1 because actions are 1-indexed
+      actionProbability = 1.f / numActionsForContext;
       logAction = true;
     } else {
       // Invoke the default policy function to get the action
       chosenAction = defaultPolicy.chooseAction(context);
 
-      if (chosenAction == 0 || chosenAction > getNumActions(context)) {
+      if (chosenAction == 0 || chosenAction > numActionsForContext) {
         throw new RuntimeException("Action chosen by default policy is not within valid range.");
       }
 
@@ -68,7 +69,7 @@ public class TauFirstExplorer<T> implements Explorer<T>, ConsumePolicy<T> {
       logAction = false;
     }
 
-    return new ChosenAction(chosenAction, actionProbability, logAction);
+    return new DecisionTuple(chosenAction, actionProbability, logAction);
   }
 
   public void enableExplore(boolean explore) {

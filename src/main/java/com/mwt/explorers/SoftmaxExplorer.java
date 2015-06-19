@@ -1,7 +1,7 @@
 package com.mwt.explorers;
 
 import com.mwt.consumers.ConsumeScorer;
-import com.mwt.misc.ChosenAction;
+import com.mwt.misc.DecisionTuple;
 import com.mwt.scorers.Scorer;
 
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class SoftmaxExplorer<T> implements Explorer<T>, ConsumeScorer<T> {
     defaultScorer = newScorer;
   }
 
-  public ChosenAction chooseAction(long saltedSeed, T context) {
+  public DecisionTuple chooseAction(long saltedSeed, T context) {
     Random random = new Random(saltedSeed);
 
     // Invoke the default scorer function
@@ -94,7 +94,7 @@ public class SoftmaxExplorer<T> implements Explorer<T>, ConsumeScorer<T> {
     }
 
     // action id is one-based
-    return new ChosenAction(actionIndex + 1, actionProbability, true);
+    return new DecisionTuple(actionIndex + 1, actionProbability, true);
   }
 
   public void enableExplore(boolean explore) {

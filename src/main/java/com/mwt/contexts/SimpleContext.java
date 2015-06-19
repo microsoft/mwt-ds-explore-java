@@ -20,10 +20,10 @@ public class SimpleContext {
 
   @Override
   public String toString() {
-    String out = "";
+    StringBuilder out = new StringBuilder();
     for (Feature feature: features) {
-      out = out + feature.getId() + ": " + feature.getValue() + " ";
+      out.append(feature.getId()).append(": ").append(feature.getValue()).append(" ");
     }
-    return out;
+    return out.toString();
   }
 }

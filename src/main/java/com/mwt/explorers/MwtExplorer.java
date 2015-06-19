@@ -1,6 +1,6 @@
 package com.mwt.explorers;
 
-import com.mwt.misc.ChosenAction;
+import com.mwt.misc.DecisionTuple;
 import com.mwt.recorders.Recorder;
 
 /**
@@ -33,12 +33,12 @@ public class MwtExplorer<T> {
    */
   int chooseAction(Explorer<T> explorer, String uniqueKey, T context) {
     long seed = uniqueKey.hashCode();
-    ChosenAction chosenAction = explorer.chooseAction(seed + appId, context);
+    DecisionTuple decisionTuple = explorer.chooseAction(seed + appId, context);
 
-    if (chosenAction.shouldRecord()) {
-      recorder.record(context, chosenAction.getAction(), chosenAction.getProbability(), uniqueKey);
+    if (decisionTuple.shouldRecord()) {
+      recorder.record(context, decisionTuple.getAction(), decisionTuple.getProbability(), uniqueKey);
     }
 
-    return chosenAction.getAction();
+    return decisionTuple.getAction();
   }
 }

@@ -5,12 +5,12 @@ package com.mwt.misc;
  * the probability it was chosen,
  * and a flag indicating whether to record this decision
  */
-public class ChosenAction {
+public class DecisionTuple {
   private int action;
   private float probability;
   private boolean record;
 
-  public ChosenAction(int action, float probability, boolean record) {
+  public DecisionTuple(int action, float probability, boolean record) {
     this.action = action;
     this.probability = probability;
     this.record = record;

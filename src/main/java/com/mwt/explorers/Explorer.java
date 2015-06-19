@@ -1,6 +1,6 @@
 package com.mwt.explorers;
 
-import com.mwt.misc.ChosenAction;
+import com.mwt.misc.DecisionTuple;
 import com.mwt.policies.Policy;
 
 /**
@@ -19,6 +19,6 @@ public interface Explorer<T> {
    * @returns            The action to take, the probability it was chosen, and a flag indicating 
    *                     whether to record this decision
    */
-  ChosenAction chooseAction(long saltedSeed, T context);
+  DecisionTuple chooseAction(long saltedSeed, T context);
   void enableExplore(boolean explore);
 }

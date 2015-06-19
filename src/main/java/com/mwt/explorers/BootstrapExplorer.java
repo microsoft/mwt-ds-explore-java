@@ -1,7 +1,7 @@
 package com.mwt.explorers;
 
 import com.mwt.consumers.ConsumePolicies;
-import com.mwt.misc.ChosenAction;
+import com.mwt.misc.DecisionTuple;
 import com.mwt.policies.Policy;
 
 import java.util.List;
@@ -38,7 +38,8 @@ public class BootstrapExplorer<T> implements Explorer<T>, ConsumePolicies<T> {
     this.policies = newPolicies;
   }
 
-  public ChosenAction chooseAction(long saltedSeed, T context) {
+  public DecisionTuple chooseAction(long saltedSeed, T context) {
+    int numActionsForContext = getNumActions(context);
     Random random = new Random(saltedSeed);
 
     // Select bag
@@ -50,7 +51,7 @@ public class BootstrapExplorer<T> implements Explorer<T>, ConsumePolicies<T> {
 
     if (explore) {
       int actionFromBag = 0;
-      int[] actionsSelected = new int[getNumActions(context)];
+      int[] actionsSelected = new int[numActionsForContext];
 
       // Invoke the default policy function to get the action
       for (int currentBag = 0; currentBag < policies.size(); currentBag++) {
@@ -59,7 +60,7 @@ public class BootstrapExplorer<T> implements Explorer<T>, ConsumePolicies<T> {
         // we could end up calling the wrong bag
         actionFromBag = policies.get(currentBag).chooseAction(context);
 
-        if (actionFromBag <= 0 || actionFromBag > getNumActions(context)) {
+        if (actionFromBag <= 0 || actionFromBag > numActionsForContext) {
           throw new RuntimeException("Action chosen by default policy is not within valid range.");
         }
 
@@ -76,7 +77,7 @@ public class BootstrapExplorer<T> implements Explorer<T>, ConsumePolicies<T> {
       actionProbability = 1.f;
     }
 
-    return new ChosenAction(chosenAction, actionProbability, true);
+    return new DecisionTuple(chosenAction, actionProbability, true);
   }
 
   public void enableExplore(boolean explore) {
