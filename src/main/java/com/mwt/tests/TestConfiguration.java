@@ -28,4 +28,7 @@ public class TestConfiguration {
 
     // tau-first parameters
     public int Tau;
+
+    // bootstrap parameters
+    public PolicyConfiguration[] PolicyConfigurations;
 }
