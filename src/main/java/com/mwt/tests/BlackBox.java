@@ -164,6 +164,79 @@ public class BlackBox {
 
     private static void testTauFirst(TestConfiguration config) throws FileNotFoundException {
         PrintWriter pw = new PrintWriter(config.OutputFile);
+
+        String appId = config.AppId;
+        int numActions = config.NumberOfActions;
+        String[] experimentalUnitIdList = config.ExperimentalUnitIdList;
+        int tau = config.Tau;
+        PolicyConfiguration configPolicy = config.PolicyConfiguration;
+        int policyType = configPolicy.PolicyType;
+
+        switch (config.ContextType) {
+            case 0: // fixed action context
+            {
+                StringRecorder<EI.RegularTestContext> recorder =
+                        new StringRecorder<EI.RegularTestContext>();
+
+                MwtExplorer<EI.RegularTestContext> mwt =
+                        new MwtExplorer<EI.RegularTestContext>(appId, recorder);
+
+                switch (policyType) {
+                    case 0: // fixed policy
+                    {
+                        EI.TestPolicy<EI.RegularTestContext> policy =
+                                new EI.TestPolicy<EI.RegularTestContext>();
+
+                        policy.ActionToChoose = configPolicy.Action;
+
+                        TauFirstExplorer<EI.RegularTestContext> explorer =
+                                new TauFirstExplorer<EI.RegularTestContext>(policy, tau, numActions);
+
+                        for (int i = 0; i < experimentalUnitIdList.length; i++) {
+                            EI.RegularTestContext context = new EI.RegularTestContext();
+                            context.Id = i;
+                            mwt.chooseAction(explorer, experimentalUnitIdList[i], context);
+                        }
+
+                        pw.print(recorder.getRecording());
+                        break;
+                    }
+                }
+                break;
+            }
+            case 1: // variable action context
+            {
+                StringRecorder<EI.VariableActionTestContext> recorder =
+                        new StringRecorder<EI.VariableActionTestContext>();
+
+                MwtExplorer<EI.VariableActionTestContext> mwt =
+                        new MwtExplorer<EI.VariableActionTestContext>(appId, recorder);
+
+                switch (policyType) {
+                    case 0: // fixed policy
+                    {
+                        EI.TestPolicy<EI.VariableActionTestContext> policy =
+                                new EI.TestPolicy<EI.VariableActionTestContext>();
+
+                        policy.ActionToChoose = configPolicy.Action;
+
+                        VariableActionTauFirstExplorer<EI.VariableActionTestContext> explorer =
+                                new VariableActionTauFirstExplorer<EI.VariableActionTestContext>(policy, tau);
+
+                        for (int i = 0; i < experimentalUnitIdList.length; i++) {
+                            EI.VariableActionTestContext context = new EI.VariableActionTestContext(numActions);
+                            context.Id = i;
+                            mwt.chooseAction(explorer, experimentalUnitIdList[i], context);
+                        }
+
+                        pw.print(recorder.getRecording());
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+
         pw.close();
     }
 

@@ -25,4 +25,7 @@ public class TestConfiguration {
 
     // epsilon greedy parameters
     public float Epsilon;
+
+    // tau-first parameters
+    public int Tau;
 }
