@@ -18,7 +18,7 @@ public class MwtExplorer<T> {
    * @param recorder
    */
   public MwtExplorer(String appId, Recorder<T> recorder) {
-    this.appId = appId.hashCode();
+    this.appId = MurMurHash3.computeIdHash(appId);
     this.recorder = recorder;
   }
 
