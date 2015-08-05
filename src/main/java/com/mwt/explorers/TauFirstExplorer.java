@@ -3,6 +3,7 @@ package com.mwt.explorers;
 import com.mwt.consumers.ConsumePolicy;
 import com.mwt.misc.DecisionTuple;
 import com.mwt.policies.Policy;
+import com.mwt.utilities.PRG;
 
 import java.util.Random;
 
@@ -46,7 +47,7 @@ public class TauFirstExplorer<T> implements Explorer<T>, ConsumePolicy<T> {
 
   public DecisionTuple chooseAction(long saltedSeed, T context) {
     int numActionsForContext = getNumActions(context);
-    Random random = new Random(saltedSeed);
+    PRG random = new PRG(saltedSeed);
 
     int chosenAction = 0;
     float actionProbability = 0.0f;
@@ -54,7 +55,7 @@ public class TauFirstExplorer<T> implements Explorer<T>, ConsumePolicy<T> {
 
     if ((tau > 0) && explore) {
       tau--;
-      chosenAction = random.nextInt(numActionsForContext) + 1; // Add 1 because actions are 1-indexed
+      chosenAction = random.uniformInt(1, numActionsForContext); // Add 1 because actions are 1-indexed
       actionProbability = 1.f / numActionsForContext;
       logAction = true;
     } else {

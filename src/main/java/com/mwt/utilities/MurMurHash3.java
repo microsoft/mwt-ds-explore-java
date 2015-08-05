@@ -32,16 +32,22 @@ public final class MurMurHash3 {
 
     private MurMurHash3() {}
 
-    public static long computeIdHash(String s) throws UnsupportedEncodingException {
+    public static long computeIdHash(String s) {
         try {
             return Integer.parseInt(s);
         }
-        catch (Exception ex) {
+        catch (NumberFormatException ex) {
             // do nothing, default to regular hash
         }
 
-        byte[] data = s.getBytes("UTF-8");
-        return murmurhash3x8632(data, 0, data.length, 0);
+        try {
+            byte[] data = s.getBytes("UTF-8");
+            return murmurhash3x8632(data, 0, data.length, 0);
+        }
+        catch (UnsupportedEncodingException ex) {
+            byte[] data = s.getBytes();
+            return murmurhash3x8632(data, 0, data.length, 0);
+        }
     }
 
     /** Returns the MurmurHash3_x86_32 hash. */

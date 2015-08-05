@@ -5,7 +5,6 @@ import com.mwt.explorers.*;
 import com.mwt.misc.Feature;
 import com.mwt.policies.Policy;
 import com.mwt.recorders.StringRecorder;
-import com.mwt.scorers.Scorer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +49,7 @@ public class ExploreOnlySample {
       MwtExplorer<MyContext> mwtt = new MwtExplorer<MyContext>("mwt", recorder);
 
       int numActions = 10;
-      int tau = 0;
+      int tau = 1;
       MyPolicy policy = new MyPolicy();
       mwtt.chooseAction(new TauFirstExplorer<MyContext>(policy, tau, numActions), "key", new MyContext());
 

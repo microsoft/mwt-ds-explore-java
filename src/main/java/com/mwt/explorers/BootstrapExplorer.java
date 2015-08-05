@@ -3,9 +3,9 @@ package com.mwt.explorers;
 import com.mwt.consumers.ConsumePolicies;
 import com.mwt.misc.DecisionTuple;
 import com.mwt.policies.Policy;
+import com.mwt.utilities.PRG;
 
 import java.util.List;
-import java.util.Random;
 
 /**
  * The Bootstrap explorer randomizes over the actions chosen by a set of default policies. 
@@ -40,10 +40,10 @@ public class BootstrapExplorer<T> implements Explorer<T>, ConsumePolicies<T> {
 
   public DecisionTuple chooseAction(long saltedSeed, T context) {
     int numActionsForContext = getNumActions(context);
-    Random random = new Random(saltedSeed);
+    PRG random = new PRG(saltedSeed);
 
     // Select bag
-    int chosenBag = random.nextInt(policies.size());
+    int chosenBag = random.uniformInt(0, policies.size() - 1);
 
     // Invoke the default policy function to get the action
     int chosenAction = 0;

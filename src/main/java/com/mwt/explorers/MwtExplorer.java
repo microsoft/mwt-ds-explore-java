@@ -2,6 +2,7 @@ package com.mwt.explorers;
 
 import com.mwt.misc.DecisionTuple;
 import com.mwt.recorders.Recorder;
+import com.mwt.utilities.MurMurHash3;
 
 /**
  * The top-level MwtExplorer class. Using this enables principled and efficient exploration
@@ -32,7 +33,7 @@ public class MwtExplorer<T> {
    * @return The chosen action
    */
   public int chooseAction(Explorer<T> explorer, String uniqueKey, T context) {
-    long seed = uniqueKey.hashCode();
+    long seed = MurMurHash3.computeIdHash(uniqueKey);
     DecisionTuple decisionTuple = explorer.chooseAction(seed + appId, context);
 
     if (decisionTuple.shouldRecord()) {

@@ -3,9 +3,9 @@ package com.mwt.explorers;
 import com.mwt.consumers.ConsumeScorer;
 import com.mwt.misc.DecisionTuple;
 import com.mwt.scorers.Scorer;
+import com.mwt.utilities.PRG;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * GenericExplorer provides complete flexibility.  You can create any
@@ -40,7 +40,7 @@ public class GenericExplorer<T> implements Explorer<T>, ConsumeScorer<T> {
   }
 
   public DecisionTuple chooseAction(long saltedSeed, T context) {
-    Random random = new Random(saltedSeed);
+    PRG random = new PRG(saltedSeed);
 
     // Invoke the default scorer function
     ArrayList<Float> weights = defaultScorer.scoreActions(context);
@@ -63,7 +63,7 @@ public class GenericExplorer<T> implements Explorer<T>, ConsumeScorer<T> {
       throw new RuntimeException("At least one score must be positive.");
     }
 
-    float draw = random.nextFloat();
+    float draw = random.uniformUnitInterval();
 
     float sum = 0.f;
     float actionProbability = 0.f;

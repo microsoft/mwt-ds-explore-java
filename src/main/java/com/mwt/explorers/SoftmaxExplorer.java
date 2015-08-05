@@ -3,9 +3,9 @@ package com.mwt.explorers;
 import com.mwt.consumers.ConsumeScorer;
 import com.mwt.misc.DecisionTuple;
 import com.mwt.scorers.Scorer;
+import com.mwt.utilities.PRG;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * In some cases, different actions have a different scores, and you would prefer to
@@ -43,7 +43,7 @@ public class SoftmaxExplorer<T> implements Explorer<T>, ConsumeScorer<T> {
   }
 
   public DecisionTuple chooseAction(long saltedSeed, T context) {
-    Random random = new Random(saltedSeed);
+    PRG random = new PRG(saltedSeed);
 
     // Invoke the default scorer function
     ArrayList<Float> scores = defaultScorer.scoreActions(context);
@@ -77,7 +77,7 @@ public class SoftmaxExplorer<T> implements Explorer<T>, ConsumeScorer<T> {
         total += newScores[i];
       }
 
-      float draw = random.nextFloat();
+      float draw = random.uniformUnitInterval();
 
       float sum = 0.f;
       actionProbability = 0.f;
