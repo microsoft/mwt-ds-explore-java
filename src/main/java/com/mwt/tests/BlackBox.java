@@ -2,6 +2,7 @@ package com.mwt.tests;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mwt.utilities.MurMurHash3;
+import com.mwt.utilities.PRG;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -56,7 +57,20 @@ public class BlackBox {
         }
     }
 
-    private static void testPrg(TestConfiguration config) {
+    private static void testPrg(TestConfiguration config) throws FileNotFoundException {
+        PrintWriter pw = new PrintWriter(config.OutputFile);
+        PRG prg = new PRG(config.Seed);
+
+        for (int i = 0; i < config.Iterations; i++) {
+            if (config.UniformInterval == null) {
+                pw.println(prg.uniformUnitInterval());
+            }
+            else {
+                pw.println(prg.uniformInt(config.UniformInterval.Item1, config.UniformInterval.Item2));
+            }
+        }
+
+        pw.close();
     }
 
     private static void testHash(TestConfiguration config) throws FileNotFoundException {
