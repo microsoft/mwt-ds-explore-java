@@ -31,4 +31,8 @@ public class TestConfiguration {
 
     // bootstrap parameters
     public PolicyConfiguration[] PolicyConfigurations;
+
+    // softmax parameters
+    public float Lambda;
+    public ScorerConfiguration ScorerConfiguration;
 }

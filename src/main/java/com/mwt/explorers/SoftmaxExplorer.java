@@ -67,7 +67,7 @@ public class SoftmaxExplorer<T> implements Explorer<T>, ConsumeScorer<T> {
       // Create a normalized exponential distribution based on the returned scores
       for (int i = 0; i < numScores; i++)
       {
-        newScores[i] = (float)Math.exp(lambda * (newScores[i] - maxScore));
+        newScores[i] = (float)Math.exp(lambda * (scores.get(i) - maxScore));
       }
 
       // Create a discrete_distribution based on the returned weights. This class handles the

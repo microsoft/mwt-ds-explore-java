@@ -245,6 +245,109 @@ public class BlackBox {
 
     private static void testSoftmax(TestConfiguration config) throws FileNotFoundException {
         PrintWriter pw = new PrintWriter(config.OutputFile);
+
+        String appId = config.AppId;
+        int numActions = config.NumberOfActions;
+        String[] experimentalUnitIdList = config.ExperimentalUnitIdList;
+        float lambda = config.Lambda;
+        ScorerConfiguration configScorer = config.ScorerConfiguration;
+        int scorerType = configScorer.ScorerType;
+
+        switch (config.ContextType) {
+            case 0: // fixed action context
+            {
+                StringRecorder<EI.RegularTestContext> recorder =
+                        new StringRecorder<EI.RegularTestContext>();
+
+                MwtExplorer<EI.RegularTestContext> mwt =
+                        new MwtExplorer<EI.RegularTestContext>(appId, recorder);
+
+                switch (scorerType) {
+                    case 0: // fixed all-equal scorer
+                    {
+                        EI.TestScorer<EI.RegularTestContext> scorer =
+                            new EI.TestScorer<EI.RegularTestContext>(configScorer.Score, numActions);
+
+                        SoftmaxExplorer<EI.RegularTestContext> explorer =
+                                new SoftmaxExplorer<EI.RegularTestContext>(scorer, lambda, numActions);
+
+                        for (int i = 0; i < experimentalUnitIdList.length; i++) {
+                            EI.RegularTestContext context = new EI.RegularTestContext();
+                            context.Id = i;
+                            mwt.chooseAction(explorer, experimentalUnitIdList[i], context);
+                        }
+
+                        pw.print(recorder.getRecording());
+                        break;
+                    }
+                    case 1: // integer-progression scorer
+                    {
+                        EI.TestScorer<EI.RegularTestContext> scorer =
+                                new EI.TestScorer<EI.RegularTestContext>(configScorer.Score, numActions, false);
+
+                        SoftmaxExplorer<EI.RegularTestContext> explorer =
+                                new SoftmaxExplorer<EI.RegularTestContext>(scorer, lambda, numActions);
+
+                        for (int i = 0; i < experimentalUnitIdList.length; i++) {
+                            EI.RegularTestContext context = new EI.RegularTestContext();
+                            context.Id = i;
+                            mwt.chooseAction(explorer, experimentalUnitIdList[i], context);
+                        }
+
+                        pw.print(recorder.getRecording());
+                        break;
+                    }
+                }
+                break;
+            }
+            case 1: // variable action context
+            {
+                StringRecorder<EI.VariableActionTestContext> recorder =
+                        new StringRecorder<EI.VariableActionTestContext>();
+
+                MwtExplorer<EI.VariableActionTestContext> mwt =
+                        new MwtExplorer<EI.VariableActionTestContext>(appId, recorder);
+
+                switch (scorerType) {
+                    case 0: // fixed all-equal scorer
+                    {
+                        EI.TestScorer<EI.VariableActionTestContext> scorer =
+                                new EI.TestScorer<EI.VariableActionTestContext>(configScorer.Score, numActions);
+
+                        VariableActionSoftmaxExplorer<EI.VariableActionTestContext> explorer =
+                                new VariableActionSoftmaxExplorer<EI.VariableActionTestContext>(scorer, lambda);
+
+                        for (int i = 0; i < experimentalUnitIdList.length; i++) {
+                            EI.VariableActionTestContext context = new EI.VariableActionTestContext(numActions);
+                            context.Id = i;
+                            mwt.chooseAction(explorer, experimentalUnitIdList[i], context);
+                        }
+
+                        pw.print(recorder.getRecording());
+                        break;
+                    }
+                    case 1: // integer-progression scorer
+                    {
+                        EI.TestScorer<EI.VariableActionTestContext> scorer =
+                                new EI.TestScorer<EI.VariableActionTestContext>(configScorer.Score, numActions, false);
+
+                        VariableActionSoftmaxExplorer<EI.VariableActionTestContext> explorer =
+                                new VariableActionSoftmaxExplorer<EI.VariableActionTestContext>(scorer, lambda);
+
+                        for (int i = 0; i < experimentalUnitIdList.length; i++) {
+                            EI.VariableActionTestContext context = new EI.VariableActionTestContext(numActions);
+                            context.Id = i;
+                            mwt.chooseAction(explorer, experimentalUnitIdList[i], context);
+                        }
+
+                        pw.print(recorder.getRecording());
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+
         pw.close();
     }
 
