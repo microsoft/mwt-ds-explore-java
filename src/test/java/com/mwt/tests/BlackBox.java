@@ -1,17 +1,19 @@
 package com.mwt.tests;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mwt.explorers.*;
 import com.mwt.policies.Policy;
-import com.mwt.recorders.*;
-import com.mwt.utilities.*;
+import com.mwt.recorders.StringRecorder;
+import com.mwt.utilities.MurMurHash3;
+import com.mwt.utilities.PRG;
+import org.apache.commons.io.IOUtils;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +25,7 @@ public class BlackBox {
         }
 
         try {
-            byte[] encoded = Files.readAllBytes(Paths.get(args[0]));
-            String content = new String(encoded, StandardCharsets.UTF_8);
+            final String content = IOUtils.toString(new File(args[0]).toURI(), Charset.forName("UTF-8"));
 
             GsonBuilder gsonBuilder = new GsonBuilder();
             Gson gson = gsonBuilder.create();
