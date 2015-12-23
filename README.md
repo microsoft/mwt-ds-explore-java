@@ -10,6 +10,6 @@ First version of client-side exploration library that includes the following exp
 - Bootstrap
 - Generic (users can specify custom weight for every action)
 
-This release supports Java. 
+This release supports Java. For other languages, see: https://github.com/multiworldtesting/.
 
 For sample usage, see: https://github.com/multiworldtesting/explore-java/blob/master/src/main/java/com/mwt/sample/ExploreOnlySample.java
