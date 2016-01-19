@@ -58,7 +58,7 @@ public class BlackBox {
             }
         }
         catch (IOException ex) {
-            // Do nothing
+            System.out.println(ex);
         }
     }
 
