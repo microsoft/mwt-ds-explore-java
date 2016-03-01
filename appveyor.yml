@@ -18,4 +18,6 @@ cache:
 - C:\maven\
 - C:\Users\appveyor\.m2
 build_script:
-- cmd: mvn clean install
+- cmd: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+test_script:
+- cmd: mvn test -B
