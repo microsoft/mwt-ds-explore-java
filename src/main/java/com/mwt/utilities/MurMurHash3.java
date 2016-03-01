@@ -18,7 +18,7 @@ import java.io.UnsupportedEncodingException;
 /**
  *  <p>
  *  This produces exactly the same hash values as the final C+
- + *  version of MurmurHash3 and is thus suitable for producing the same hash values across
+ *  version of MurmurHash3 and is thus suitable for producing the same hash values across
  *  platforms.
  *  <p>
  *  The 32 bit x86 version of this hash should be the fastest variant for relatively short keys like ids.
@@ -50,7 +50,14 @@ public final class MurMurHash3 {
         }
     }
 
-    /** Returns the MurmurHash3_x86_32 hash. */
+    /**
+     * Returns the MurmurHash3_x86_32 hash.
+     * @param data   the data to hash
+     * @param offset the offset to use with the hash
+     * @param len    the length of the resultant hash (controls the size)
+     * @param seed   the seed to use
+     * @return       the hashed value
+     */
     public static long murmurhash3x8632(byte[] data, int offset, int len, int seed) {
 
         int c1 = 0xcc9e2d51;
