@@ -12,12 +12,31 @@ import static org.junit.Assert.assertTrue;
  */
 public class TauFirstExplorerTest {
     private final ExplorerInformation<String> exInfo = new ExplorerInformation<String>(8);
+    private final ExplorerInformation<FixedVariableActionContext> varExInfo = new ExplorerInformation<FixedVariableActionContext>(8);
 
     @Test
     public void fixedPolicyLessThanTau() {
-        TauFirstExplorer<String> explorer = new TauFirstExplorer<String>(exInfo.policy, 3, 10);
+        lessThanTau("context", exInfo);
+    }
 
-        String context = "context";
+    @Test
+    public void fixedPolicyGreaterThanTau() {
+        greaterThanTau("context", exInfo);
+    }
+
+    @Test
+    public void variableActionPolicyLessThanTau() {
+        lessThanTau(new FixedVariableActionContext(10), varExInfo);
+    }
+
+    @Test
+    public void variableActionPolicyGreaterThanTau() {
+        greaterThanTau(new FixedVariableActionContext(10), varExInfo);
+    }
+
+    private <T> void lessThanTau(T context, ExplorerInformation<T> exInfo) {
+        TauFirstExplorer<T> explorer = new TauFirstExplorer<T>(exInfo.policy, 3, 10);
+
         int action = exInfo.mwt.chooseAction(explorer, "abc", context);
 
         assertEquals(7, action);
@@ -29,11 +48,9 @@ public class TauFirstExplorerTest {
         assertEquals("7 abc 0.10000 | " + context, exInfo.recorder.getRecording().trim());
     }
 
-    @Test
-    public void fixedPolicyGreaterThanTau() {
-        TauFirstExplorer<String> explorer = new TauFirstExplorer<String>(exInfo.policy, 0, 10);
+    private <T> void greaterThanTau(T context, ExplorerInformation<T> exInfo) {
+        TauFirstExplorer<T> explorer = new TauFirstExplorer<T>(exInfo.policy, 0, 10);
 
-        String context = "context";
         exInfo.mwt.chooseAction(explorer, "abc", context);
 
         int action = exInfo.mwt.chooseAction(explorer, "abc", context);
@@ -45,18 +62,5 @@ public class TauFirstExplorerTest {
 
         assertEquals(8, secondAction);
         assertTrue(exInfo.recorder.getRecording().trim().isEmpty());
-    }
-
-    @Test
-    public void variableActionPolicyLessThanTau() {
-        ExplorerInformation<FixedVariableActionContext> exInfo = new ExplorerInformation<FixedVariableActionContext>(8);
-
-        TauFirstExplorer<FixedVariableActionContext> explorer = new TauFirstExplorer<FixedVariableActionContext>(exInfo.policy, 3, 10);
-
-        FixedVariableActionContext context = new FixedVariableActionContext(10);
-        int action = exInfo.mwt.chooseAction(explorer, "abc", context);
-
-        assertEquals(7, action);
-        assertEquals("7 abc 0.10000 | " + context, exInfo.recorder.getRecording().trim());
     }
 }

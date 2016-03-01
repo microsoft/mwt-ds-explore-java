@@ -12,50 +12,44 @@ import static junit.framework.Assert.assertEquals;
  */
 public class GenericExplorerTest {
 
-    private final ExplorerInformation<String> stringExInfo = new ExplorerInformation<String>(8);
+    private final ExplorerInformation<String> exInfo = new ExplorerInformation<String>(8);
     private final ExplorerInformation<FixedVariableActionContext> varExInfo = new ExplorerInformation<FixedVariableActionContext>(8);
 
     @Test
     public void fixedAllEqualScorer() {
-        FixedScorer<String> scorer = new FixedScorer<String>(1, 1);
-        GenericExplorer<String> explorer = new GenericExplorer<String>(scorer, 2);
-
-        String context = "context";
-        int action = stringExInfo.mwt.chooseAction(explorer, "abc", context);
-        assertEquals(2, action);
-        assertEquals("2 abc 0.50000 | " + context, stringExInfo.recorder.getRecording().trim());
+        allEqualScorer("context", exInfo);
     }
 
     @Test
     public void fixedIntegerProgressionScorer() {
-        FixedScorer<String> scorer = new FixedScorer<String>(1, 2, 3);
-        GenericExplorer<String> explorer = new GenericExplorer<String>(scorer, 3);
-
-        String context = "context";
-        int action = stringExInfo.mwt.chooseAction(explorer, "abc", context);
-        assertEquals(3, action);
-        assertEquals("3 abc 0.50000 | " + context, stringExInfo.recorder.getRecording().trim());
+        integerProgressionScorer("context", exInfo);
     }
 
     @Test
     public void variableAllEqualScorer() {
-        FixedScorer<FixedVariableActionContext> scorer = new FixedScorer<FixedVariableActionContext>(1, 1);
-        GenericExplorer<FixedVariableActionContext> explorer = new GenericExplorer<FixedVariableActionContext>(scorer, 2);
-
-        FixedVariableActionContext context = new FixedVariableActionContext(2);
-        int action = varExInfo.mwt.chooseAction(explorer, "abc", context);
-        assertEquals(2, action);
-        assertEquals("2 abc 0.50000 | " + context, varExInfo.recorder.getRecording().trim());
+        allEqualScorer(new FixedVariableActionContext(3), varExInfo);
     }
 
     @Test
     public void variableIntegerProgressionScorer() {
-        FixedScorer<FixedVariableActionContext> scorer = new FixedScorer<FixedVariableActionContext>(1, 2, 3);
-        GenericExplorer<FixedVariableActionContext> explorer = new GenericExplorer<FixedVariableActionContext>(scorer, 3);
+        integerProgressionScorer(new FixedVariableActionContext(3), varExInfo);
+    }
 
-        FixedVariableActionContext context = new FixedVariableActionContext(3);
-        int action = varExInfo.mwt.chooseAction(explorer, "abc", context);
+    private <T> void allEqualScorer(T context, ExplorerInformation<T> exInfo) {
+        FixedScorer<T> scorer = new FixedScorer<T>(1, 1);
+        GenericExplorer<T> explorer = new GenericExplorer<T>(scorer, 2);
+
+        int action = exInfo.mwt.chooseAction(explorer, "abc", context);
+        assertEquals(2, action);
+        assertEquals("2 abc 0.50000 | " + context, exInfo.recorder.getRecording().trim());
+    }
+
+    private <T> void integerProgressionScorer(T context, ExplorerInformation<T> exInfo) {
+        FixedScorer<T> scorer = new FixedScorer<T>(1, 2, 3);
+        GenericExplorer<T> explorer = new GenericExplorer<T>(scorer, 3);
+
+        int action = exInfo.mwt.chooseAction(explorer, "abc", context);
         assertEquals(3, action);
-        assertEquals("3 abc 0.50000 | " + context, varExInfo.recorder.getRecording().trim());
+        assertEquals("3 abc 0.50000 | " + context, exInfo.recorder.getRecording().trim());
     }
 }

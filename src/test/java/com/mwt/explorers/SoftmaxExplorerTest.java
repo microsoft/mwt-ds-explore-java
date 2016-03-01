@@ -16,45 +16,39 @@ public class SoftmaxExplorerTest {
 
     @Test
     public void fixedAllEqualScorer() {
-        FixedScorer<String> scorer = new FixedScorer<String>(1, 1);
-        SoftmaxExplorer<String> explorer = new SoftmaxExplorer<String>(scorer, 0.1f, 2);
-
-        String context = "context";
-        int action = stringExInfo.mwt.chooseAction(explorer, "abc", context);
-        assertEquals(2, action);
-        assertEquals("2 abc 0.50000 | " + context, stringExInfo.recorder.getRecording().trim());
+        allEqualScorer("context", stringExInfo);
     }
 
     @Test
     public void fixedIntegerProgressionScorer() {
-        FixedScorer<String> scorer = new FixedScorer<String>(1, 2, 3);
-        SoftmaxExplorer<String> explorer = new SoftmaxExplorer<String>(scorer, 0.1f, 3);
-
-        String context = "context";
-        int action = stringExInfo.mwt.chooseAction(explorer, "abc", context);
-        assertEquals(3, action);
-        assertEquals("3 abc 0.36717 | " + context, stringExInfo.recorder.getRecording().trim());
+        integerProgressionScorer("context", stringExInfo);
     }
 
     @Test
     public void variableAllEqualScorer() {
-        FixedScorer<FixedVariableActionContext> scorer = new FixedScorer<FixedVariableActionContext>(1, 1);
-        SoftmaxExplorer<FixedVariableActionContext> explorer = new SoftmaxExplorer<FixedVariableActionContext>(scorer, 0.1f, 2);
-
-        FixedVariableActionContext context = new FixedVariableActionContext(2);
-        int action = varExInfo.mwt.chooseAction(explorer, "abc", context);
-        assertEquals(2, action);
-        assertEquals("2 abc 0.50000 | " + context, varExInfo.recorder.getRecording().trim());
+        allEqualScorer(new FixedVariableActionContext(2), varExInfo);
     }
 
     @Test
     public void variableIntegerProgressionScorer() {
-        FixedScorer<FixedVariableActionContext> scorer = new FixedScorer<FixedVariableActionContext>(1, 2, 3);
-        SoftmaxExplorer<FixedVariableActionContext> explorer = new SoftmaxExplorer<FixedVariableActionContext>(scorer, 0.1f, 3);
+        integerProgressionScorer(new FixedVariableActionContext(3), varExInfo);
+    }
 
-        FixedVariableActionContext context = new FixedVariableActionContext(3);
-        int action = varExInfo.mwt.chooseAction(explorer, "abc", context);
+    private <T> void allEqualScorer(T context, ExplorerInformation<T> exInfo) {
+        FixedScorer<T> scorer = new FixedScorer<T>(1, 1);
+        SoftmaxExplorer<T> explorer = new SoftmaxExplorer<T>(scorer, 0.1f, 2);
+
+        int action = exInfo.mwt.chooseAction(explorer, "abc", context);
+        assertEquals(2, action);
+        assertEquals("2 abc 0.50000 | " + context, exInfo.recorder.getRecording().trim());
+    }
+
+    private <T> void integerProgressionScorer(T context, ExplorerInformation<T> exInfo) {
+        FixedScorer<T> scorer = new FixedScorer<T>(1, 2, 3);
+        SoftmaxExplorer<T> explorer = new SoftmaxExplorer<T>(scorer, 0.1f, 3);
+
+        int action = exInfo.mwt.chooseAction(explorer, "abc", context);
         assertEquals(3, action);
-        assertEquals("3 abc 0.36717 | " + context, varExInfo.recorder.getRecording().trim());
+        assertEquals("3 abc 0.36717 | " + context, exInfo.recorder.getRecording().trim());
     }
 }
