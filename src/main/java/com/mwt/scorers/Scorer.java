@@ -11,7 +11,7 @@ public interface Scorer<T> {
    * This implementation should be thread-safe if multithreading is needed.
    *
    * @param context   A user-defined context for the decision
-   * @returns         A vector of scores indexed by action (1-based)
+   * @return          A vector of scores indexed by action (1-based)
    */
   ArrayList<Float> scoreActions(T context);
 }

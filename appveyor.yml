@@ -1,8 +1,8 @@
 version: 1.0.{build}
 environment:
   PATH: C:\maven\apache-maven-3.2.5\bin;%JAVA_HOME%\bin;%PATH%
-  MAVEN_OPTS: -XX:MaxPermSize=2g -Xmx4g
-  JAVA_OPTS: -XX:MaxPermSize=2g -Xmx4g
+  MAVEN_OPTS: -Xmx16m
+  JAVA_OPTS: -Xmx16m
 install:
 - ps: >-
     Add-Type -AssemblyName System.IO.Compression.FileSystem
@@ -18,6 +18,6 @@ cache:
 - C:\maven\
 - C:\Users\appveyor\.m2
 build_script:
-- cmd: mvn clean package --batch-mode -DskipTest
+- cmd: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 test_script:
-- cmd: mvn clean install --batch-mode
+- cmd: mvn test -B

@@ -1,4 +1,4 @@
-package com.mwt.tests;
+package com.mwt.externalTests;
 
 import com.mwt.contexts.VariableActionContext;
 import com.mwt.policies.Policy;

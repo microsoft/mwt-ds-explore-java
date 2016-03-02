@@ -10,7 +10,7 @@ public interface Policy<T> {
    * This implementation should be thread-safe if multithreading is needed.
    *
    * @param context   A user-defined context for the decision
-   * @returns	        The action to take (1-based index)
+   * @return          The action to take (1-based index)
    */
   int chooseAction(T context);
 }

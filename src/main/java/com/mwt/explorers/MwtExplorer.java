@@ -14,8 +14,8 @@ public class MwtExplorer<T> {
 
   /**
    * MwtExplorer constructor
-   * @param appId
-   * @param recorder
+   * @param appId the application ID
+   * @param recorder the specific recorder to use
    */
   public MwtExplorer(String appId, Recorder<T> recorder) {
     this.appId = MurMurHash3.computeIdHash(appId);
@@ -27,7 +27,7 @@ public class MwtExplorer<T> {
    * drop-in replacement for any existing policy function.   
    *
    * @param explorer    An existing exploration algorithm (one of the below) which uses the default policy as a callback.
-   * @param uniqueKey  A unique identifier for the experimental unit. This could be a user id, a session id, etc..
+   * @param uniqueKey   A unique identifier for the experimental unit. This could be a user id, a session id, etc..
    * @param context     The context upon which a decision is made. See SimpleContext below for an example.
    *
    * @return The chosen action

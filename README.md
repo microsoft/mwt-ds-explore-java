@@ -1,4 +1,5 @@
-[![Build Status](https://ci.appveyor.com/api/projects/status/github/MultiWorldTesting/explore-java?branch=master&svg=true)](https://ci.appveyor.com/project/lhoang29/explore-java)
+[![Build Status](https://travis-ci.org/jmorra/explore-java.png)](https://travis-ci.org/jmorra/explore-java)
+[![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/MultiWorldTesting/explore-java?branch=master&svg=true)](https://ci.appveyor.com/project/lhoang29/explore-java)
 
 Exploration Library
 =======

@@ -1,4 +1,4 @@
-package com.mwt.tests;
+package com.mwt.externalTests;
 
 /**
  * Represents a configuration object containing the type of test case & parameters to run.

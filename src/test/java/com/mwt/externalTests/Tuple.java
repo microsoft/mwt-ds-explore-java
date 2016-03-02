@@ -1,4 +1,4 @@
-package com.mwt.tests;
+package com.mwt.externalTests;
 
 public class Tuple<X, Y> {
     public X Item1;

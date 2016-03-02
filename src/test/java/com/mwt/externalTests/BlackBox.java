@@ -1,4 +1,4 @@
-package com.mwt.tests;
+package com.mwt.externalTests;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -21,6 +21,7 @@ public class BlackBox {
 
     public static void main(String[] args) {
         if (args == null || args.length != 1) {
+            System.err.println("Wrong number of arguments");
             return;
         }
 
@@ -266,7 +267,7 @@ public class BlackBox {
                     case 0: // fixed all-equal scorer
                     {
                         EI.TestScorer<EI.RegularTestContext> scorer =
-                            new EI.TestScorer<EI.RegularTestContext>(configScorer.Score, numActions);
+                                new EI.TestScorer<EI.RegularTestContext>(configScorer.Score, numActions);
 
                         SoftmaxExplorer<EI.RegularTestContext> explorer =
                                 new SoftmaxExplorer<EI.RegularTestContext>(scorer, lambda, numActions);
