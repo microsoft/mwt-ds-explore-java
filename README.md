@@ -16,3 +16,5 @@ First version of client-side exploration library that includes the following exp
 This release supports Java. For other languages, see: https://github.com/multiworldtesting/.
 
 For sample usage, see: https://github.com/multiworldtesting/explore-java/blob/master/src/main/java/com/mwt/sample/ExploreOnlySample.java
+
+For more details on Multiworld Testing as a Service, visit http://aka.ms/mwt
