@@ -67,7 +67,7 @@ public class TauFirstExplorer<T> implements Explorer<T>, ConsumePolicy<T> {
       }
 
       actionProbability = 1.f;
-      logAction = false;
+      logAction = true;
     }
 
     return new DecisionTuple(chosenAction, actionProbability, logAction);

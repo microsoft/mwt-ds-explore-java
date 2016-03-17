@@ -51,16 +51,14 @@ public class TauFirstExplorerTest {
     private <T> void greaterThanTau(T context, ExplorerInformation<T> exInfo) {
         TauFirstExplorer<T> explorer = new TauFirstExplorer<T>(exInfo.policy, 0, 10);
 
-        exInfo.mwt.chooseAction(explorer, "abc", context);
-
         int action = exInfo.mwt.chooseAction(explorer, "abc", context);
 
         assertEquals(8, action);
-        assertTrue(exInfo.recorder.getRecording().trim().isEmpty());
+        assertEquals("8 abc 1.00000 | " + context, exInfo.recorder.getRecording().trim());
 
         int secondAction = exInfo.mwt.chooseAction(explorer, "abc", context);
 
         assertEquals(8, secondAction);
-        assertTrue(exInfo.recorder.getRecording().trim().isEmpty());
+        assertEquals("8 abc 1.00000 | " + context, exInfo.recorder.getRecording().trim());
     }
 }
