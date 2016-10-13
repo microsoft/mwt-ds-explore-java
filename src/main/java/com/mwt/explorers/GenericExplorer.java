@@ -40,11 +40,11 @@ public class GenericExplorer<T> implements Explorer<T>, ConsumeScorer<T> {
   }
 
   public DecisionTuple chooseAction(long saltedSeed, T context) {
-    PRG random = new PRG(saltedSeed);
+    final PRG random = new PRG(saltedSeed);
 
     // Invoke the default scorer function
-    List<Float> weights = defaultScorer.scoreActions(context);
-    int numWeights = weights.size();
+    final List<Float> weights = defaultScorer.scoreActions(context);
+    final int numWeights = weights.size();
     if (numWeights != getNumActions(context)) {
       throw new RuntimeException("The number of weights returned by the scorer must equal number of actions");
     }
@@ -63,7 +63,7 @@ public class GenericExplorer<T> implements Explorer<T>, ConsumeScorer<T> {
       throw new RuntimeException("At least one score must be positive.");
     }
 
-    float draw = random.uniformUnitInterval();
+    final float draw = random.uniformUnitInterval();
 
     float sum = 0.f;
     float actionProbability = 0.f;

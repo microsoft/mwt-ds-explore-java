@@ -39,12 +39,12 @@ public class BootstrapExplorer<T> implements Explorer<T>, ConsumePolicies<T> {
   }
 
   public DecisionTuple chooseAction(long saltedSeed, T context) {
-    int numActionsForContext = getNumActions(context);
-    PRG random = new PRG(saltedSeed);
+    final int numActionsForContext = getNumActions(context);
+    final PRG random = new PRG(saltedSeed);
 
     // Select bag
     final int numPolicies = policies.size();
-    int chosenBag = random.uniformInt(0, numPolicies - 1);
+    final int chosenBag = random.uniformInt(0, numPolicies - 1);
 
     // Invoke the default policy function to get the action
     int chosenAction = 0;
@@ -52,7 +52,7 @@ public class BootstrapExplorer<T> implements Explorer<T>, ConsumePolicies<T> {
 
     if (explore) {
       int actionFromBag = 0;
-      int[] actionsSelected = new int[numActionsForContext];
+      final int[] actionsSelected = new int[numActionsForContext];
 
       // Invoke the default policy function to get the action
       int currentBag = 0;
@@ -74,6 +74,7 @@ public class BootstrapExplorer<T> implements Explorer<T>, ConsumePolicies<T> {
         actionsSelected[actionFromBag - 1] = actionsSelected[actionFromBag - 1] + 1; // action id is one-based
         ++currentBag;
       }
+
       actionProbability = (float)actionsSelected[chosenAction - 1] / numPolicies; // action id is one-based
     } else {
       chosenAction = policies.get(0).chooseAction(context);

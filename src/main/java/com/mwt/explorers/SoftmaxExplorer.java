@@ -43,11 +43,11 @@ public class SoftmaxExplorer<T> implements Explorer<T>, ConsumeScorer<T> {
   }
 
   public DecisionTuple chooseAction(long saltedSeed, T context) {
-    PRG random = new PRG(saltedSeed);
+    final PRG random = new PRG(saltedSeed);
 
     // Invoke the default scorer function
-    List<Float> scores = defaultScorer.scoreActions(context);
-    int numScores = scores.size();
+    final List<Float> scores = defaultScorer.scoreActions(context);
+    final int numScores = scores.size();
     if (numScores != getNumActions(context)) {
       throw new RuntimeException("The number of scores returned by the scorer must equal number of actions");
     }
