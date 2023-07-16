@@ -5,7 +5,7 @@ import com.mwt.misc.DecisionTuple;
 import com.mwt.scorers.Scorer;
 import com.mwt.utilities.PRG;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * In some cases, different actions have a different scores, and you would prefer to
@@ -43,46 +43,48 @@ public class SoftmaxExplorer<T> implements Explorer<T>, ConsumeScorer<T> {
   }
 
   public DecisionTuple chooseAction(long saltedSeed, T context) {
-    PRG random = new PRG(saltedSeed);
+    final PRG random = new PRG(saltedSeed);
 
     // Invoke the default scorer function
-    ArrayList<Float> scores = defaultScorer.scoreActions(context);
-    int numScores = scores.size();
+    final List<Float> scores = defaultScorer.scoreActions(context);
+    final int numScores = scores.size();
     if (numScores != getNumActions(context)) {
       throw new RuntimeException("The number of scores returned by the scorer must equal number of actions");
     }
 
     int actionIndex = 0;
-    float actionProbability = 1.0f;
-    Float maxScore = Float.MIN_VALUE;
-    for (int i = 0; i < numScores; i++) {
-      if (maxScore < scores.get(i)) {
-        maxScore = scores.get(i);
+    float actionProbability = 1f;
+    float maxScore = Float.MIN_VALUE;
+    int i = 0;
+    for (float score: scores) {
+      if (maxScore < score) {
+        maxScore = score;
         actionIndex = i;
       }
+      ++i;
     }
 
     if (explore) {
       float[] newScores = new float[numScores];
       // Create a normalized exponential distribution based on the returned scores
-      for (int i = 0; i < numScores; i++)
-      {
-        newScores[i] = (float)Math.exp(lambda * (scores.get(i) - maxScore));
+      i = 0;
+      for (float score: scores) {
+        newScores[i++] = (float) Math.exp(lambda * (score - maxScore));
       }
 
       // Create a discrete_distribution based on the returned weights. This class handles the
       // case where the sum of the weights is < or > 1, by normalizing agains the sum.
-      float total = 0.f;
-      for (int i = 0; i < numScores; i++) {
+      float total = 0f;
+      for (i = 0; i < numScores; i++) {
         total += newScores[i];
       }
 
       float draw = random.uniformUnitInterval();
 
-      float sum = 0.f;
-      actionProbability = 0.f;
+      float sum = 0f;
+      actionProbability = 0f;
       actionIndex = numScores - 1;
-      for (int i = 0; i < numScores; i++) {
+      for (i = 0; i < numScores; i++) {
         newScores[i] = newScores[i] / total;
         sum += newScores[i];
         if (sum > draw) {

@@ -5,7 +5,7 @@ import com.mwt.misc.DecisionTuple;
 import com.mwt.scorers.Scorer;
 import com.mwt.utilities.PRG;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * GenericExplorer provides complete flexibility.  You can create any
@@ -40,11 +40,11 @@ public class GenericExplorer<T> implements Explorer<T>, ConsumeScorer<T> {
   }
 
   public DecisionTuple chooseAction(long saltedSeed, T context) {
-    PRG random = new PRG(saltedSeed);
+    final PRG random = new PRG(saltedSeed);
 
     // Invoke the default scorer function
-    ArrayList<Float> weights = defaultScorer.scoreActions(context);
-    int numWeights = weights.size();
+    final List<Float> weights = defaultScorer.scoreActions(context);
+    final int numWeights = weights.size();
     if (numWeights != getNumActions(context)) {
       throw new RuntimeException("The number of weights returned by the scorer must equal number of actions");
     }
@@ -63,19 +63,21 @@ public class GenericExplorer<T> implements Explorer<T>, ConsumeScorer<T> {
       throw new RuntimeException("At least one score must be positive.");
     }
 
-    float draw = random.uniformUnitInterval();
+    final float draw = random.uniformUnitInterval();
 
     float sum = 0.f;
     float actionProbability = 0.f;
     int actionIndex = numWeights - 1;
-    for (int i = 0; i < numWeights; i++) {
-      float prob = weights.get(i) / total;
-      sum += prob;
+    int i = 0;
+    for (float weight: weights) {
+      final float prob = weight / total;
+      sum += weight / total;
       if (sum > draw) {
         actionIndex = i;
         actionProbability = prob;
         break;
       }
+      ++i;
     }
 
     // action id is one-based

@@ -39,26 +39,28 @@ public class BootstrapExplorer<T> implements Explorer<T>, ConsumePolicies<T> {
   }
 
   public DecisionTuple chooseAction(long saltedSeed, T context) {
-    int numActionsForContext = getNumActions(context);
-    PRG random = new PRG(saltedSeed);
+    final int numActionsForContext = getNumActions(context);
+    final PRG random = new PRG(saltedSeed);
 
     // Select bag
-    int chosenBag = random.uniformInt(0, policies.size() - 1);
+    final int numPolicies = policies.size();
+    final int chosenBag = random.uniformInt(0, numPolicies - 1);
 
     // Invoke the default policy function to get the action
     int chosenAction = 0;
-    float actionProbability = 0.0f;
+    float actionProbability = 0f;
 
     if (explore) {
       int actionFromBag = 0;
-      int[] actionsSelected = new int[numActionsForContext];
+      final int[] actionsSelected = new int[numActionsForContext];
 
       // Invoke the default policy function to get the action
-      for (int currentBag = 0; currentBag < policies.size(); currentBag++) {
+      int currentBag = 0;
+      for (Policy<T> policy: policies) {
         // TODO: can VW predict for all bags on one call? (returning all actions at once)
-        // if we trigger into VW passing an index to invoke bootstrap scoring, and if VW model changes while we are doing so,
-        // we could end up calling the wrong bag
-        actionFromBag = policies.get(currentBag).chooseAction(context);
+        // if we trigger into VW passing an index to invoke bootstrap scoring, and if VW model
+        // changes while we are doing so, we could end up calling the wrong bag
+        actionFromBag = policy.chooseAction(context);
 
         if (actionFromBag <= 0 || actionFromBag > numActionsForContext) {
           throw new RuntimeException("Action chosen by default policy is not within valid range.");
@@ -70,11 +72,13 @@ public class BootstrapExplorer<T> implements Explorer<T>, ConsumePolicies<T> {
 
         //this won't work if actions aren't 0 to Count
         actionsSelected[actionFromBag - 1] = actionsSelected[actionFromBag - 1] + 1; // action id is one-based
+        ++currentBag;
       }
-      actionProbability = (float)actionsSelected[chosenAction - 1] / policies.size(); // action id is one-based
+
+      actionProbability = (float)actionsSelected[chosenAction - 1] / numPolicies; // action id is one-based
     } else {
       chosenAction = policies.get(0).chooseAction(context);
-      actionProbability = 1.f;
+      actionProbability = 1f;
     }
 
     return new DecisionTuple(chosenAction, actionProbability, true);
